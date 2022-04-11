@@ -1,0 +1,9 @@
+.service{
+    border: 2px solid royalblue;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.service img{
+    width: 100%;
+}
