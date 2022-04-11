@@ -2,14 +2,17 @@
     margin-top: 16px;
 }
 
-.header nav a{
+.link a{
     text-decoration: none;
-    color: black;
+    color: white;
     font-size: 18px;
-    padding: 14px 18px;
+    padding: 6px 12px;
+    font-weight: 500;
+
 }
 
-.header nav a:hover{
-    background-color: royalblue;
-    color: white;
+.link a:hover{
+    background-color: white;
+    color: royalblue;
+    border-radius: 2px;
 }
