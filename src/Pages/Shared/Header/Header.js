@@ -1,35 +1,41 @@
 import React from "react";
-import { Container, Navbar, Nav } from "react-bootstrap";
+import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import logo from '../../../images/logo.png'
+import logo from "../../../images/logo.png";
 import "./Header.css";
 
 const Header = () => {
   return (
-    <Navbar bg="primary" variant="dark">
+    <Navbar collapseOnSelect expand="lg" sticky="top" bg="primary" variant="dark">
       <Container>
-        <Navbar.Brand href="#home">
-            <img style={{height: '30px'}} src={logo} alt="logo" />
+        <Navbar.Brand as={Link} to="/">
+          <img height={30} src={logo} alt="logo" />
         </Navbar.Brand>
-        <Nav className="me-auto link">
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-        </Nav>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/about">About</Nav.Link>
+            <NavDropdown title="More" id="collasible-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Services</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">
+                Prices
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Performance</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.4">
+                Re-checking
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+          <Nav>
+            <Nav.Link as={Link} to="/login">
+              Login
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
       </Container>
     </Navbar>
-    
-   
- 
-
-
-    // <header className="header">
-
-    //   {/* <nav>
-    //             <Link to='/'>Home</Link>
-    //             <Link to='/about'>About</Link>
-    //         </nav>
-    //         <h3>This is Header part</h3> */}
-    // </header>
   );
 };
 
