@@ -1,0 +1,36 @@
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import './Register.css';
+
+const Register = () => {
+    const navigate = useNavigate();
+
+    const handleRegister = event => {
+        event.preventDefault();
+        const name = event.target.userName.value;
+        const email = event.target.email.value;
+        const password = event.target.password.value;
+
+        console.log(name);
+    }
+
+    const navigateToLogin = event => {
+        navigate('/login');
+    }
+    return (
+        <div>
+            <h2 className='text-center py-2'>Please Register</h2>
+            <div className='form-handle'>
+                <form onSubmit={handleRegister} >
+                    <input type="text" name="userName" placeholder='Your Name' id="" />
+                    <input type="email" name="email" placeholder='Email' id="" />
+                    <input type="password" name="password" placeholder='Password' id="" />
+                    <input type="submit" value="Register" />
+                </form>
+                <p className="mt-2">Already have an account? <Link to="/login" className="text-danger text-decoration-none" onClick={navigateToLogin}>Login Here</Link></p>
+            </div>
+        </div>
+    );
+};
+
+export default Register;
