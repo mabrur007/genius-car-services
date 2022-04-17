@@ -1,6 +1,7 @@
+import { async } from "@firebase/util";
 import React, { useRef } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import auth from "../../../firebase_init";
 import SocialLogin from "../SocialLogin/SocialLogin";
@@ -13,10 +14,11 @@ const Login = () => {
 
   const from = location.state?.from?.pathname || "/";
 
+  let errorElement;
   // for loging in a registered user
-  const [signInWithEmailAndPassword, user ] =
-    useSignInWithEmailAndPassword(auth);
-
+  const [signInWithEmailAndPassword, user, error] = useSignInWithEmailAndPassword(auth);
+  const [sendPasswordResetEmail] = useSendPasswordResetEmail(auth);
+    
   const emailRef = useRef("");
   const passwordRef = useRef("");
 
@@ -33,9 +35,19 @@ const Login = () => {
     navigate(from, { replace: true });
   }
 
-  const navigateToRegister = (event) => {
+  if (error) {
+    errorElement = <p className='text-danger'>Error: {error?.message}</p>
+  }
+
+  const navigateToRegister = () => {
     navigate("/register");
   };
+
+  const resetPassword = async () => {
+    const email = emailRef.current.value;
+    await sendPasswordResetEmail(email);
+          alert('Sent email');
+  }
 
   return (
     <div>
@@ -58,20 +70,16 @@ const Login = () => {
             />
           </Form.Group>
 
-          <Button variant="primary" type="submit">
-            Submit
+          <Button className="w-50 d-block mx-auto" variant="primary" type="submit">
+            LogIn
           </Button>
         </Form>
-        <p className="mt-2">
-          New to Genius Car?{" "}
-          <Link
-            to="/register"
-            className="text-danger text-decoration-none"
-            onClick={navigateToRegister}
-          >
-            Register Here
-          </Link>
-        </p>
+
+        {errorElement}
+        
+        <p className="mt-2">New to Genius Car?{" "}<Link to="/register" className="text-danger text-decoration-none" onClick={navigateToRegister}>Register Here</Link></p>
+        <p className="mt-2">Forgot Password?{" "}<Link to="" className="text-danger text-decoration-none" onClick={resetPassword}>Reset Password</Link></p>
+        
         <SocialLogin></SocialLogin>
       </div>
     </div>

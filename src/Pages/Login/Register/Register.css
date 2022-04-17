@@ -3,10 +3,12 @@
     margin: 0 auto;
 }
 
-.form-handle input{
+.form-handle input:not([type=checkbox]){
     display: block;
     width: 100%;
-    height: 50px;
+    height: 40px;
+    border: 1px solid lightgray;
+    border-radius: 4px;
     margin-top: 12px;
     padding-left: 10px;
 }
