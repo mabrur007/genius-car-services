@@ -4,7 +4,10 @@ import { Button, Form } from "react-bootstrap";
 import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import auth from "../../../firebase_init";
+import Loading from "../../Shared/Loading/Loading";
 import SocialLogin from "../SocialLogin/SocialLogin";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
 
@@ -16,8 +19,8 @@ const Login = () => {
 
   let errorElement;
   // for loging in a registered user
-  const [signInWithEmailAndPassword, user, error] = useSignInWithEmailAndPassword(auth);
-  const [sendPasswordResetEmail] = useSendPasswordResetEmail(auth);
+  const [signInWithEmailAndPassword,loading, user, error] = useSignInWithEmailAndPassword(auth);
+  const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
     
   const emailRef = useRef("");
   const passwordRef = useRef("");
@@ -30,6 +33,10 @@ const Login = () => {
     signInWithEmailAndPassword(email, password);
     console.log(email, password);
   };
+
+  if (loading || sending) {
+    return <Loading></Loading>
+  }
 
   if (user) {
     navigate(from, { replace: true });
@@ -45,8 +52,13 @@ const Login = () => {
 
   const resetPassword = async () => {
     const email = emailRef.current.value;
-    await sendPasswordResetEmail(email);
-          alert('Sent email');
+    if (email) {
+      await sendPasswordResetEmail(email);
+      toast('New password sent via email');
+    }
+    else {
+      toast('Please enter your email');
+    }
   }
 
   return (
@@ -77,9 +89,10 @@ const Login = () => {
 
         {errorElement}
         
-        <p className="mt-2">New to Genius Car?{" "}<Link to="/register" className="text-danger text-decoration-none" onClick={navigateToRegister}>Register Here</Link></p>
-        <p className="mt-2">Forgot Password?{" "}<Link to="" className="text-danger text-decoration-none" onClick={resetPassword}>Reset Password</Link></p>
+        <p className="mt-2">New to Genius Car?<Link to="/register" className="text-primary text-decoration-none" onClick={navigateToRegister}>Register Here</Link></p>
+        <p className="mt-2">Forgot Password?<button className="btn btn-link text-primary text-decoration-none" onClick={resetPassword}>Reset Password</button></p>
         
+        <ToastContainer />
         <SocialLogin></SocialLogin>
       </div>
     </div>
